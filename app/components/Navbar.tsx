@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -11,8 +11,10 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const location = useLocation();
   const handleNavClick = () => setMobileOpen(false);
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav
@@ -36,9 +38,7 @@ const Navbar = () => {
         CVault
       </Link>
 
-      <div
-        className="ml-auto gap-7 items-center font-semibold text-slate-700 text-[1.05rem] hidden md:flex"
-      >
+      <div className="ml-auto gap-7 items-center font-semibold text-slate-700 text-[1.05rem] hidden md:flex">
         {navLinks.slice(1).map((l) => (
           <Link
             key={l.to}
@@ -46,9 +46,10 @@ const Navbar = () => {
             style={{
               marginLeft: "1.5rem",
               padding: ".5rem 0",
-              color: "#0b2540",
+              color: isActive(l.to) ? "#149eb2" : "#0b2540",
+              borderBottom: isActive(l.to) ? "2px solid #149eb2" : "2px solid transparent",
               textDecoration: "none",
-              transition: "color .18s",
+              transition: "all 0.2s",
             }}
             onClick={handleNavClick}
           >
@@ -69,7 +70,6 @@ const Navbar = () => {
         }}
         onClick={() => setMobileOpen((v) => !v)}
       >
-
         <span
           style={{
             display: "block",
@@ -134,7 +134,8 @@ const Navbar = () => {
               fontSize: "1.32rem",
               fontWeight: "700",
               textDecoration: "none",
-              color: "#1787a7",
+              color: isActive(l.to) ? "#149eb2" : "#1787a7",
+              borderBottom: isActive(l.to) ? "2px solid #149eb2" : "none",
               letterSpacing: ".02em",
             }}
             onClick={handleNavClick}
